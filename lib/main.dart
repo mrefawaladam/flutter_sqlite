@@ -27,6 +27,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   @override
+  int _value = 1;
+  int val = -1;
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4 ,

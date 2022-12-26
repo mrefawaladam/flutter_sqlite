@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'database/db_helper.dart';
 import 'model/kontak.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class FormKontak extends StatefulWidget {
@@ -16,24 +17,24 @@ class FormKontak extends StatefulWidget {
 class _FormKontakState extends State<FormKontak> {
   DbHelper db = DbHelper();
 
-  TextEditingController? name;
+  TextEditingController? nama;
   TextEditingController? lastName;
-  TextEditingController? mobileNo;
-  TextEditingController? email;
-  TextEditingController? company;
+  TextEditingController? alamat;
+  TextEditingController? jk;
+  TextEditingController? nim;
 
   @override
   void initState() {
-    name = TextEditingController(
+    nama = TextEditingController(
         text: widget.kontak == null ? '' : widget.kontak!.nama);
 
-    mobileNo = TextEditingController(
+    nim = TextEditingController(
         text: widget.kontak == null ? '' : widget.kontak!.nim);
 
-    email = TextEditingController(
+    alamat = TextEditingController(
         text: widget.kontak == null ? '' : widget.kontak!.alamat);
 
-    company = TextEditingController(
+    jk = TextEditingController(
         text: widget.kontak == null ? '' : widget.kontak!.jk);
 
     super.initState();
@@ -51,9 +52,9 @@ class _FormKontakState extends State<FormKontak> {
               top: 20,
             ),
             child: TextField(
-              controller: name,
+              controller: nama,
               decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'Nama',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   )),
@@ -64,9 +65,9 @@ class _FormKontakState extends State<FormKontak> {
               top: 20,
             ),
             child: TextField(
-              controller: mobileNo,
+              controller: nim,
               decoration: InputDecoration(
-                  labelText: 'Mobile No',
+                  labelText: 'NIM',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   )),
@@ -77,9 +78,9 @@ class _FormKontakState extends State<FormKontak> {
               top: 20,
             ),
             child: TextField(
-              controller: email,
+              controller: alamat,
               decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Alamat',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   )),
@@ -90,9 +91,9 @@ class _FormKontakState extends State<FormKontak> {
               top: 20,
             ),
             child: TextField(
-              controller: company,
+              controller: jk,
               decoration: InputDecoration(
-                  labelText: 'Company',
+                  labelText: 'Jenis Klamin',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   )),
@@ -114,9 +115,11 @@ class _FormKontakState extends State<FormKontak> {
               ),
               onPressed: () {
                 upsertKontak();
+                showToastMessage("Show Toast Message on Flutter");
               },
             ),
-          )
+          ),
+
         ],
       ),
     );
@@ -127,22 +130,37 @@ class _FormKontakState extends State<FormKontak> {
       //update
       await db.updateKontak(Kontak(
           id: widget.kontak!.id,
-          nama: name!.text,
-          nim: mobileNo!.text,
-          alamat: email!.text,
-          jk: company!.text
+          nama: nama!.text,
+          nim: nim!.text,
+          alamat: alamat!.text,
+          jk: jk!.text
       ));
 
       Navigator.pop(context, 'update');
     } else {
       //insert
       await db.saveKontak(Kontak(
-        nama: name!.text,
-        nim: mobileNo!.text,
-        alamat: email!.text,
-        jk: company!.text,
+        nama: nama!.text,
+        nim: nim!.text,
+        alamat: alamat!.text,
+        jk: jk!.text,
       ));
       Navigator.pop(context, 'save');
     }
   }
+
+  //create this function, so that, you needn't to configure toast every time
+  void showToastMessage(String message){
+    Fluttertoast.showToast(
+        msg: message, //message to show toast
+        toastLength: Toast.LENGTH_LONG, //duration for message to show
+        gravity: ToastGravity.CENTER, //where you want to show, top, bottom
+        timeInSecForIosWeb: 1, //for iOS only
+        //backgroundColor: Colors.red, //background Color for message
+        textColor: Colors.white, //message text color
+        fontSize: 16.0 //message font size
+    );
+  }
+
+
 }

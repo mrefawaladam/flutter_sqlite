@@ -51,86 +51,19 @@ class _ListKontakPageState extends State<ListKontakPage> {
                       padding: const EdgeInsets.only(
                         top: 8,
                       ),
-                      child: Text("Email: ${kontak.nim}"),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                      ),
-                      child: Text("Phone: ${kontak.nim}"),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                      ),
-                      child: Text("Company: ${kontak.alamat}"),
+                      child: Text("NIM: ${kontak.nim}"),
                     )
                   ],
                 ),
-                trailing:
-                FittedBox(
-                  fit: BoxFit.fill,
-                  child: Row(
-                    children: [
-                      // button edit
-                      IconButton(
-                          onPressed: () {
-                            _openFormEdit(kontak);
-                          },
-                          icon: Icon(Icons.edit)
-                      ),
-                      // button hapus
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: (){
-                          //membuat dialog konfirmasi hapus
-                          AlertDialog hapus = AlertDialog(
-                            title: Text("Information"),
-                            content: Container(
-                              height: 100,
-                              child: Column(
-                                children: [
-                                  Text(
-                                      "Yakin ingin Menghapus Data ${kontak.nama}"
-                                  )
-                                ],
-                              ),
-                            ),
-                            //terdapat 2 button.
-                            //jika ya maka jalankan _deleteKontak() dan tutup dialog
-                            //jika tidak maka tutup dialog
-                            actions: [
-                              TextButton(
-                                  onPressed: (){
-                                    _deleteKontak(kontak, index);
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("Ya")
-                              ),
-                              TextButton(
-                                child: Text('Tidak'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                          showDialog(context: context, builder: (context) => hapus);
-                        },
-                      )
-                    ],
-                  ),
-                ),
+                onTap: () {
+                  _openFormEdit(kontak);
+                },
+
               ),
             );
           }),
       //membuat button mengapung di bagian bawah kanan layar
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){
-          _openFormCreate();
-        },
-      ),
+
 
     );
   }
