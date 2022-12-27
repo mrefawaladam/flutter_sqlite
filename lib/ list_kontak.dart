@@ -41,6 +41,12 @@ class _ListKontakPageState extends State<ListKontakPage> {
                   Icons.person,
                   size: 50,
                 ),
+                trailing: GestureDetector(
+                  child: const Icon(Icons.delete),
+                  onTap: ()async{
+                    DbHelper().deleteKontak(int.parse(kontak.id.toString()));
+                  },
+                ),
                 title: Text(
                     '${kontak.nama}'
                 ),
