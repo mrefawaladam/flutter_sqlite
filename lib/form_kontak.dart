@@ -39,7 +39,7 @@ class _FormKontakState extends State<FormKontak> {
 
     super.initState();
   }
-
+  int _value = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,19 +86,51 @@ class _FormKontakState extends State<FormKontak> {
                   )),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-            ),
-            child: TextField(
-              controller: jk,
-              decoration: InputDecoration(
-                  labelText: 'Jenis Klamin',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  )),
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(children: [
+                Radio(
+                  value: 1,
+                  groupValue: _value,
+                  onChanged: (value){
+                    setState(() {
+                      _value = value!;
+                    });
+                  },
+                ),
+                const SizedBox(width: 10.0,),
+                const Text("Male"),
+              ],),
+              Row(children: [
+                Radio(
+                  value: 2,
+                  groupValue: _value,
+                  onChanged: (value1){
+                    setState(() {
+                      _value = value1!;
+                    });
+                  },
+                ),
+                const SizedBox(width: 10.0,),
+                const Text("Famale"),
+              ],),
+            ],
           ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     top: 20,
+          //   ),
+          //   child: TextField(
+          //     controller: jk,
+          //     decoration: InputDecoration(
+          //         labelText: 'Jenis Klamin',
+          //         border: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(8),
+          //         )),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
                 top: 20
