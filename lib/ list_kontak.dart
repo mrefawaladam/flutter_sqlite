@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learningsqlite/detail.dart';
 import 'form_kontak.dart';
 
 import 'database/db_helper.dart';
@@ -107,7 +108,7 @@ class _ListKontakPageState extends State<ListKontakPage> {
   //membuka halaman edit Kontak
   Future<void> _openFormEdit(Kontak kontak) async {
     var result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => FormKontak(kontak: kontak)));
+        MaterialPageRoute(builder: (context) => DetailPage(nim: int.parse(kontak.nim.toString()), nama: kontak.nama.toString(), alamat: kontak.alamat.toString(), jeniskelamin: kontak.jk.toString(),)));
     if (result == 'update') {
       await _getAllKontak();
     }

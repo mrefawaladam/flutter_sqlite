@@ -5,16 +5,16 @@ import 'model/kontak.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
-class FormKontak extends StatefulWidget {
-  final Kontak? kontak;
+class EditKontak extends StatefulWidget {
+  late final Kontak? kontak;
 
-  FormKontak({this.kontak});
+  EditKontak({this.kontak});
 
   @override
-  _FormKontakState createState() => _FormKontakState();
+  _EditKontakState createState() => _EditKontakState();
 }
 
-class _FormKontakState extends State<FormKontak> {
+class _EditKontakState extends State<EditKontak> {
   DbHelper db = DbHelper();
 
   TextEditingController nama = TextEditingController();
@@ -22,7 +22,7 @@ class _FormKontakState extends State<FormKontak> {
   TextEditingController alamat = TextEditingController();
   TextEditingController jk = TextEditingController();
   TextEditingController nim = TextEditingController();
-  
+
   @override
   void initState() {
     // nama = TextEditingController(
@@ -186,10 +186,10 @@ class _FormKontakState extends State<FormKontak> {
     } else {
       //insert
       await db.saveKontak(Kontak(
-        nama: nama!.text,
-        nim: nim!.text,
-        alamat: alamat!.text,
-        jk: _value == 1 ? 'male' : 'female'
+          nama: nama!.text,
+          nim: nim!.text,
+          alamat: alamat!.text,
+          jk: _value == 1 ? 'male' : 'female'
       ));
       // Navigator.pop(context, 'save');
     }
