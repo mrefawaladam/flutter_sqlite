@@ -17,29 +17,42 @@ class FormKontak extends StatefulWidget {
 class _FormKontakState extends State<FormKontak> {
   DbHelper db = DbHelper();
 
-  TextEditingController? nama;
-  TextEditingController? lastName;
-  TextEditingController? alamat;
-  TextEditingController? jk;
-  TextEditingController? nim;
-
+  TextEditingController nama = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController alamat = TextEditingController();
+  TextEditingController jk = TextEditingController();
+  TextEditingController nim = TextEditingController();
+  
   @override
   void initState() {
-    nama = TextEditingController(
-        text: widget.kontak == null ? '' : widget.kontak!.nama);
-
-    nim = TextEditingController(
-        text: widget.kontak == null ? '' : widget.kontak!.nim);
-
-    alamat = TextEditingController(
-        text: widget.kontak == null ? '' : widget.kontak!.alamat);
-
-    jk = TextEditingController(
-        text: widget.kontak == null ? '' : widget.kontak!.jk);
+    // nama = TextEditingController(
+    //     text: widget.kontak == null ? '' : widget.kontak!.nama);
+    //
+    // nim = TextEditingController(
+    //     text: widget.kontak == null ? '' : widget.kontak!.nim);
+    //
+    // alamat = TextEditingController(
+    //     text: widget.kontak == null ? '' : widget.kontak!.alamat);
+    //
+    // jk = TextEditingController(
+    //     text: widget.kontak == null ? '' : widget.kontak!.jk);
 
     super.initState();
   }
-  int _value = 1;
+
+  void submit(BuildContext context, String nama, String nim, String alamat) {
+    if (nama.isEmpty || nim.isEmpty || alamat.isEmpty) {
+      const snackBar = SnackBar(
+        duration: Duration(seconds: 5),
+        content: Text("Nama, NIM dan Alamat tidak boleh kosong"),
+        backgroundColor: Colors.red,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  int _value = 1;//tambahin pemilihan if else
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +150,7 @@ class _FormKontakState extends State<FormKontak> {
             ),
             child: ElevatedButton(
               child: (widget.kontak == null)
-                  ? Text(
+                  ? const Text(
                 'Add',
                 style: TextStyle(color: Colors.white),
               )
@@ -146,8 +159,9 @@ class _FormKontakState extends State<FormKontak> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                upsertKontak();
-                showToastMessage("Show Toast Message on Flutter");
+                submit(context, nama.text, nim.text, alamat.text);
+                // upsertKontak();
+                // showToastMessage("Show Toast Message on Flutter");
               },
             ),
           ),
@@ -165,7 +179,7 @@ class _FormKontakState extends State<FormKontak> {
           nama: nama!.text,
           nim: nim!.text,
           alamat: alamat!.text,
-          jk: jk!.text
+          jk: _value == 1 ? 'male' : 'female'
       ));
 
       Navigator.pop(context, 'update');
@@ -175,7 +189,7 @@ class _FormKontakState extends State<FormKontak> {
         nama: nama!.text,
         nim: nim!.text,
         alamat: alamat!.text,
-        jk: jk!.text,
+        jk: _value == 1 ? 'male' : 'female'
       ));
       Navigator.pop(context, 'save');
     }
