@@ -6,9 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 
 class FormKontak extends StatefulWidget {
-  final Kontak? kontak;
+  final Biodata? biodata;
 
-  FormKontak({this.kontak});
+  FormKontak({this.biodata});
 
   @override
   _FormKontakState createState() => _FormKontakState();
@@ -22,20 +22,20 @@ class _FormKontakState extends State<FormKontak> {
   TextEditingController alamat = TextEditingController();
   TextEditingController jk = TextEditingController();
   TextEditingController nim = TextEditingController();
-  
+
   @override
   void initState() {
-    // nama = TextEditingController(
-    //     text: widget.kontak == null ? '' : widget.kontak!.nama);
-    //
-    // nim = TextEditingController(
-    //     text: widget.kontak == null ? '' : widget.kontak!.nim);
-    //
-    // alamat = TextEditingController(
-    //     text: widget.kontak == null ? '' : widget.kontak!.alamat);
-    //
-    // jk = TextEditingController(
-    //     text: widget.kontak == null ? '' : widget.kontak!.jk);
+    nama = TextEditingController(
+        text: widget.biodata == null ? '' : widget.biodata!.nama);
+
+    nim = TextEditingController(
+        text: widget.biodata == null ? '' : widget.biodata!.nim);
+
+    alamat = TextEditingController(
+        text: widget.biodata == null ? '' : widget.biodata!.alamat);
+
+    jk = TextEditingController(
+        text: widget.biodata == null ? '' : widget.biodata!.jk);
 
     super.initState();
   }
@@ -47,8 +47,10 @@ class _FormKontakState extends State<FormKontak> {
         content: Text("Nama, NIM dan Alamat tidak boleh kosong"),
         backgroundColor: Colors.red,
       );
-
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }else{
+      upsertKontak();
+      showToastMessage("Data berhasil ditambahkan");
     }
   }
 
@@ -60,9 +62,10 @@ class _FormKontakState extends State<FormKontak> {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
+
           Padding(
             padding: const EdgeInsets.only(
-              top: 20,
+              top: 50,
             ),
             child: TextField(
               controller: nama,
@@ -131,37 +134,25 @@ class _FormKontakState extends State<FormKontak> {
               ],),
             ],
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(
-          //     top: 20,
-          //   ),
-          //   child: TextField(
-          //     controller: jk,
-          //     decoration: InputDecoration(
-          //         labelText: 'Jenis Klamin',
-          //         border: OutlineInputBorder(
-          //           borderRadius: BorderRadius.circular(8),
-          //         )),
-          //   ),
-          // ),
+
           Padding(
             padding: const EdgeInsets.only(
                 top: 20
             ),
+
             child: ElevatedButton(
-              child: (widget.kontak == null)
+              child: (widget.biodata == null)
                   ? const Text(
-                'Add',
+                'Tambah Biodata',
                 style: TextStyle(color: Colors.white),
               )
                   : Text(
-                'Update',
+                'Update Biodata',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
                 submit(context, nama.text, nim.text, alamat.text);
-                upsertKontak();
-                showToastMessage("Data berhasil ditambahkan");
+
               },
             ),
           ),
@@ -172,10 +163,10 @@ class _FormKontakState extends State<FormKontak> {
   }
 
   Future<void> upsertKontak() async {
-    if (widget.kontak != null) {
+    if (widget.biodata != null) {
       //update
-      await db.updateKontak(Kontak(
-          id: widget.kontak!.id,
+      await db.updateKontak(Biodata(
+          id: widget.biodata!.id,
           nama: nama!.text,
           nim: nim!.text,
           alamat: alamat!.text,
@@ -185,7 +176,7 @@ class _FormKontakState extends State<FormKontak> {
       Navigator.pop(context, 'update');
     } else {
       //insert
-      await db.saveKontak(Kontak(
+      await db.saveKontak(Biodata(
         nama: nama!.text,
         nim: nim!.text,
         alamat: alamat!.text,

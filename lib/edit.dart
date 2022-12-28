@@ -6,9 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 
 class EditKontak extends StatefulWidget {
-  late final Kontak? kontak;
+  late final Biodata? biodata;
 
-  EditKontak({this.kontak});
+  EditKontak({this.biodata});
 
   @override
   _EditKontakState createState() => _EditKontakState();
@@ -149,7 +149,7 @@ class _EditKontakState extends State<EditKontak> {
                 top: 20
             ),
             child: ElevatedButton(
-              child: (widget.kontak == null)
+              child: (widget.biodata == null)
                   ? const Text(
                 'Add',
                 style: TextStyle(color: Colors.white),
@@ -172,10 +172,10 @@ class _EditKontakState extends State<EditKontak> {
   }
 
   Future<void> upsertKontak() async {
-    if (widget.kontak != null) {
+    if (widget.biodata != null) {
       //update
-      await db.updateKontak(Kontak(
-          id: widget.kontak!.id,
+      await db.updateKontak(Biodata(
+          id: widget.biodata!.id,
           nama: nama!.text,
           nim: nim!.text,
           alamat: alamat!.text,
@@ -185,7 +185,7 @@ class _EditKontakState extends State<EditKontak> {
       Navigator.pop(context, 'update');
     } else {
       //insert
-      await db.saveKontak(Kontak(
+      await db.saveKontak(Biodata(
           nama: nama!.text,
           nim: nim!.text,
           alamat: alamat!.text,

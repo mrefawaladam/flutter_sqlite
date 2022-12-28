@@ -13,7 +13,7 @@ class ListKontakPage extends StatefulWidget {
 }
 
 class _ListKontakPageState extends State<ListKontakPage> {
-  List<Kontak> listKontak = [];
+  List<Biodata> listBiodata = [];
   DbHelper db = DbHelper();
 
   @override
@@ -29,9 +29,9 @@ class _ListKontakPageState extends State<ListKontakPage> {
 
 
       body: ListView.builder(
-          itemCount: listKontak.length,
+          itemCount: listBiodata.length,
           itemBuilder: (context, index) {
-            Kontak kontak = listKontak[index];
+            Biodata biodata = listBiodata[index];
             return Padding(
               padding: const EdgeInsets.only(
                   top: 20
@@ -41,14 +41,9 @@ class _ListKontakPageState extends State<ListKontakPage> {
                   Icons.person,
                   size: 50,
                 ),
-                trailing: GestureDetector(
-                  child: const Icon(Icons.delete),
-                  onTap: ()async{
-                    DbHelper().deleteKontak(int.parse(kontak.id.toString()));
-                  },
-                ),
+
                 title: Text(
-                    '${kontak.nama}'
+                    '${biodata.nama}'
                 ),
                 subtitle: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -58,14 +53,67 @@ class _ListKontakPageState extends State<ListKontakPage> {
                       padding: const EdgeInsets.only(
                         top: 8,
                       ),
-                      child: Text("NIM: ${kontak.nim}"),
+                      child: Text("NIM: ${biodata.nim}"),
                     )
                   ],
                 ),
                 onTap: () {
-                  _openFormEdit(kontak);
+                  _openFormDetail(biodata);
                 },
-
+                trailing:
+                FittedBox(
+                  fit: BoxFit.fill,
+                  child: Row(
+                    children: [
+                      // button edit
+                      IconButton(
+                          onPressed: () {
+                            _openFormEdit(biodata);
+                          },
+                          icon: Icon(Icons.edit)
+                      ),
+                      // button hapus
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: (){
+                          //membuat dialog konfirmasi hapus
+                          AlertDialog hapus = AlertDialog(
+                            title: Text("Information"),
+                            content: Container(
+                              height: 100,
+                              child: Column(
+                                children: [
+                                  Text(
+                                      "Yakin ingin Menghapus Data ${biodata.nama}"
+                                  )
+                                ],
+                              ),
+                            ),
+                            //terdapat 2 button.
+                            //jika ya maka jalankan _deleteKontak() dan tutup dialog
+                            //jika tidak maka tutup dialog
+                            actions: [
+                              TextButton(
+                                  onPressed: (){
+                                    _deleteKontak(biodata, index);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Ya")
+                              ),
+                              TextButton(
+                                child: Text('Tidak'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                          showDialog(context: context, builder: (context) => hapus);
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ),
             );
           }),
@@ -83,22 +131,22 @@ class _ListKontakPageState extends State<ListKontakPage> {
     //ada perubahanan state
     setState(() {
       //hapus data pada listKontak
-      listKontak.clear();
+      listBiodata.clear();
 
       //lakukan perulangan pada variabel list
       list!.forEach((kontak) {
 
         //masukan data ke listKontak
-        listKontak.add(Kontak.fromMap(kontak));
+        listBiodata.add(Biodata.fromMap(kontak));
       });
     });
   }
 
   //menghapus data Kontak
-  Future<void> _deleteKontak(Kontak kontak, int position) async {
+  Future<void> _deleteKontak(Biodata kontak, int position) async {
     await db.deleteKontak(kontak.id!);
     setState(() {
-      listKontak.removeAt(position);
+      listBiodata.removeAt(position);
     });
   }
 
@@ -112,11 +160,17 @@ class _ListKontakPageState extends State<ListKontakPage> {
   }
 
   //membuka halaman edit Kontak
-  Future<void> _openFormEdit(Kontak kontak) async {
+  Future<void> _openFormEdit(Biodata kontak) async {
     var result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DetailPage(nim: int.parse(kontak.nim.toString()), nama: kontak.nama.toString(), alamat: kontak.alamat.toString(), jeniskelamin: kontak.jk.toString(),)));
+        MaterialPageRoute(builder: (context) => FormKontak(biodata: kontak)));
     if (result == 'update') {
       await _getAllKontak();
     }
+  }
+
+  Future<void> _openFormDetail(Biodata kontak) async {
+    var result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => DetailPage(nim: int.parse(kontak.nim.toString()), nama: kontak.nama.toString(), alamat: kontak.alamat.toString(), jeniskelamin: kontak.jk.toString(),)));
+
   }
 }

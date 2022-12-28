@@ -45,9 +45,9 @@ class DbHelper {
   }
 
   //insert ke database
-  Future<int?> saveKontak(Kontak kontak) async {
+  Future<int?> saveKontak(Biodata biodata) async {
     var dbClient = await _db;
-    return await dbClient!.insert(tableName, kontak.toMap());
+    return await dbClient!.insert(tableName, biodata.toMap());
   }
 
   //read database
@@ -65,7 +65,7 @@ class DbHelper {
   }
 
   //update database
-  Future<int?> updateKontak(Kontak kontak) async {
+  Future<int?> updateKontak(Biodata kontak) async {
     var dbClient = await _db;
     return await dbClient!.update(tableName, kontak.toMap(), where: '$columnId = ?', whereArgs: [kontak.id]);
   }

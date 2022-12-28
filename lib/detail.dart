@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:learningsqlite/%20list_kontak.dart';
 import 'package:learningsqlite/edit.dart';
 import 'package:learningsqlite/main.dart';
 

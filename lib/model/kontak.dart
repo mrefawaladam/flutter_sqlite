@@ -1,12 +1,12 @@
 
-class Kontak{
+class Biodata{
   int? id;
   String? nama;
   String? nim;
   String? alamat;
   String? jk;
 
-  Kontak({this.id, this.nama, this.nim, this.alamat, this.jk});
+  Biodata({this.id, this.nama, this.nim, this.alamat, this.jk});
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -22,7 +22,7 @@ class Kontak{
     return map;
   }
 
-  Kontak.fromMap(Map<String, dynamic> map) {
+  Biodata.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.nama = map['nama'];
     this.nim = map['nim'];
